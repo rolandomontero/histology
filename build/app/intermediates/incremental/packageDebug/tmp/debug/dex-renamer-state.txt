@@ -1,0 +1,4 @@
+#Mon Jul 15 13:11:25 CLT 2024
+base.0=/Users/rolandomontero/FlutterProyects/histology/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
