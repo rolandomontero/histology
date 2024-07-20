@@ -66,6 +66,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   webview_flutter: ^4.5.0
   image_picker: ^1.0.8
+  flutter_masked_text2: ^0.9.1
 
 
 dev_dependencies:

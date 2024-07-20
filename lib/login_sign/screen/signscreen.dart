@@ -3,7 +3,11 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/foundation.dart';
+import 'package:histology/global/colores.dart';
+import 'package:histology/login_sign/Widget/input_text.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 class SignScreen extends StatefulWidget {
   const SignScreen({super.key});
@@ -13,15 +17,20 @@ class SignScreen extends StatefulWidget {
 }
 
 class _SignScreenState extends State<SignScreen> {
+  final bool isSign = false;
   Uint8List? _image;
   File? selectedIMage;
-  static const Color histologyBkcg = Color(0xFF895476);
-  //static const Color histologyColor = Color(0xFFF2F0E0);
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController =
+      MaskedTextController(mask: '+56900000000', text: '+56');
+  final TextEditingController schoolController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: histologyBkcg,
+        backgroundColor: Tema.histologyBkcg,
         title: Center(
           child: Text(
             "Registro de Usuario",
@@ -74,7 +83,7 @@ class _SignScreenState extends State<SignScreen> {
                                   : const CircleAvatar(
                                       radius: 64,
                                       backgroundImage: AssetImage(
-                                          'assets/images/icons/user.png'),
+                                          'assets/images/icons/user_hst.png'),
                                     ),
                               Positioned(
                                   bottom: -10.0,
@@ -85,100 +94,89 @@ class _SignScreenState extends State<SignScreen> {
                                     },
                                     icon: const Icon(
                                       Icons.add_a_photo,
-                                      color: histologyBkcg,
+                                      color: Tema.histologyBkcg,
                                       size: 36,
                                     ),
                                   ))
                             ],
                           ),
-                          const SizedBox(height: 16.0),
-                          const TextField(
-                              decoration: InputDecoration(
-                                icon: Icon(
-                                  Icons.person,
-                                  color: histologyBkcg,
-                                  size: 36,
+                          InputText(
+                              icon: Icons.person,
+                              textEditingController: nameController,
+                              hintText: 'Nombre(s) y apellido(s)',
+                              textInputType: TextInputType.text),
+                          InputText(
+                              icon: Icons.email,
+                              textEditingController: emailController,
+                              hintText: 'Correo eléctronico',
+                              textInputType: TextInputType.emailAddress),
+                          InputText(
+                              icon: Icons.phone_android,
+                              textEditingController: phoneController,
+                              hintText: 'Teléfono',
+                              textInputType: TextInputType.phone),
+                          if (isSign == false)
+                            Column(children: [
+                              InputText(
+                                  icon: Icons.school,
+                                  textEditingController: schoolController,
+                                  hintText: 'Establecimiento educativo',
+                                  textInputType: TextInputType.text),
+                              const SizedBox(height: 8),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  textStyle: const TextStyle(
+                                    fontSize: 18, //fontWeight: FontWeight.bold
+                                  ),
+                                  // Cambia el color del botón a verde
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        20), // Agrega bordes redondeados
+                                  ),
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Tema.histologyBkcg,
                                 ),
-                                prefixIconColor: histologyBkcg,
+                                child: const Text('Registrarse'),
                               ),
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: histologyBkcg,
-                                //fontWeight: FontWeight.bold,
-                              )),
-                          const Text(
-                            'Nombre(s) y  apellido(s)',
-                          ),
-                          const SizedBox(height: 12.0),
-                          const TextField(
-                              decoration: InputDecoration(
-                                // labelText: 'Tu Nombre',
-                                icon: Icon(
-                                  Icons.mail,
-                                  color: histologyBkcg,
-                                  size: 32,
+                            ])
+                          else if (isSign == true)
+                            Column(
+                              children: [
+                                const TextField(
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      // labelText: 'Tu Nombre',
+                                      // prefixIcon: Icon(Icons.person),
+                                      prefixIconColor: Tema.histologyBkcg,
+                                    ),
+                                    style: TextStyle(
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.bold,
+                                        color: Tema.histologyBkcg)),
+                                const Text(
+                                  'Código activación',
                                 ),
-                                prefixIconColor: histologyBkcg,
-                              ),
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: histologyBkcg,
-                                //fontWeight: FontWeight.bold,
-                              )),
-                          const Text(
-                            'Correo eléctronico',
-                          ),
-                          const SizedBox(height: 12.0),
-                          const TextField(
-                              decoration: InputDecoration(
-                                icon: Icon(
-                                  Icons.phone_android,
-                                  color: histologyBkcg,
-                                  size: 32,
+                                const SizedBox(height: 32),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    textStyle: const TextStyle(
+                                      fontSize:
+                                          18, //fontWeight: FontWeight.bold
+                                    ),
+                                    // Cambia el color del botón a verde
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          20), // Agrega bordes redondeados
+                                    ),
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Tema.histologyBkcg,
+                                  ),
+                                  child: const Text('Activar'),
                                 ),
-                                prefixIconColor: histologyBkcg,
-                              ),
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: histologyBkcg,
-                                //fontWeight: FontWeight.bold,
-                              )),
-                          const Text(
-                            'Teléfono',
-                          ),
-                          const SizedBox(height: 18.0),
-                          const TextField(
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                // labelText: 'Tu Nombre',
-                                // prefixIcon: Icon(Icons.person),
-                                prefixIconColor: histologyBkcg,
-                              ),
-                              style: TextStyle(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                  color: histologyBkcg)),
-                          const Text(
-                            'Código activación',
-                          ),
-                          const SizedBox(height: 32),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              textStyle: const TextStyle(
-                                fontSize: 18,
-                                //fontWeight: FontWeight.bold
-                              ),
-                              // Cambia el color del botón a verde
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    20), // Agrega bordes redondeados
-                              ),
-                              foregroundColor: Colors.white,
-                              backgroundColor: histologyBkcg,
+                              ],
                             ),
-                            child: const Text('Registrarse'),
-                          ),
                           const SizedBox(height: 16),
                         ],
                       ),
@@ -209,7 +207,7 @@ class _SignScreenState extends State<SignScreen> {
                     children: [
                       Icon(
                         Icons.image,
-                        color: histologyBkcg,
+                        color: Tema.histologyBkcg,
                         size: 48,
                       ),
                       Text("Galeria")
@@ -226,7 +224,7 @@ class _SignScreenState extends State<SignScreen> {
                     children: [
                       Icon(
                         Icons.camera_alt,
-                        color: histologyBkcg,
+                        color: Tema.histologyBkcg,
                         size: 48,
                       ),
                       Text("Cámara")

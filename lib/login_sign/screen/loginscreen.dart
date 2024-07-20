@@ -143,16 +143,16 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           const SizedBox(height: 12.0),
           const CircleAvatar(
-            radius: 64,
+            radius: 52,
             backgroundImage: AssetImage('assets/images/icons/user.png'),
           ),
-          const SizedBox(height: 42.0),
+          const SizedBox(height: 12.0),
           InputText(
               icon: Icons.email_rounded,
               textEditingController: emailController,
               hintText: 'Ingrese su email',
               textInputType: TextInputType.text),
-          const SizedBox(height: 42.0),
+          const SizedBox(height: 18.0),
           InputText(
             icon: Icons.lock,
             textEditingController: passwordController,
@@ -160,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
             textInputType: TextInputType.text,
             isPass: true,
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 32),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(

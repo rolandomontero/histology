@@ -158,6 +158,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "flutter_masked_text2",
+      "rootUri": "file:///Users/rolandomontero/.pub-cache/hosted/pub.dev/flutter_masked_text2-0.9.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_plugin_android_lifecycle",
       "rootUri": "file:///Users/rolandomontero/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.18",
       "packageUri": "lib/",
@@ -656,7 +662,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-07-20T16:29:41.453755Z",
+  "generated": "2024-07-20T17:53:29.076402Z",
   "generator": "pub",
   "generatorVersion": "3.1.3"
 }
