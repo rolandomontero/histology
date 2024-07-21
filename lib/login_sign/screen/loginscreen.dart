@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:histology/global/colores.dart';
 import 'package:histology/login_sign/screen/signscreen.dart'; 
 import 'package:histology/login_sign/Widget/input_text.dart';
 
@@ -144,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 12.0),
           const CircleAvatar(
             radius: 52,
-            backgroundImage: AssetImage('assets/images/icons/user.png'),
+            backgroundImage: AssetImage('assets/images/icons/user_hst.png'),
           ),
           const SizedBox(height: 12.0),
           InputText(
@@ -195,7 +196,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: const Text(
                     "Regístrate",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Tema.histologyBkcg,
+                      
+                      ),
                   ),
                 )
               ],

@@ -1,12 +1,9 @@
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter/foundation.dart';
 import 'package:histology/global/colores.dart';
+import 'package:histology/global/widgetprofile.dart';
 import 'package:histology/login_sign/Widget/input_text.dart';
-import 'package:image_picker/image_picker.dart';
-
+import 'package:histology/login_sign/Widget/snackbar.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 class SignScreen extends StatefulWidget {
@@ -17,9 +14,8 @@ class SignScreen extends StatefulWidget {
 }
 
 class _SignScreenState extends State<SignScreen> {
-  final bool isSign = false;
-  Uint8List? _image;
-  File? selectedIMage;
+  bool isSign = false;
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController =
@@ -73,33 +69,7 @@ class _SignScreenState extends State<SignScreen> {
                       child: Column(
                         children: [
                           const SizedBox(height: 12.0),
-                          Stack(
-                            children: [
-                              _image != null
-                                  ? CircleAvatar(
-                                      radius: 64,
-                                      backgroundImage: MemoryImage(_image!),
-                                    )
-                                  : const CircleAvatar(
-                                      radius: 64,
-                                      backgroundImage: AssetImage(
-                                          'assets/images/icons/user_hst.png'),
-                                    ),
-                              Positioned(
-                                  bottom: -10.0,
-                                  right: -1.0,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      showImagePickerOption(context);
-                                    },
-                                    icon: const Icon(
-                                      Icons.add_a_photo,
-                                      color: Tema.histologyBkcg,
-                                      size: 36,
-                                    ),
-                                  ))
-                            ],
-                          ),
+                          const ShowProfile(editar: true),
                           InputText(
                               icon: Icons.person,
                               textEditingController: nameController,
@@ -110,13 +80,13 @@ class _SignScreenState extends State<SignScreen> {
                               textEditingController: emailController,
                               hintText: 'Correo eléctronico',
                               textInputType: TextInputType.emailAddress),
-                          InputText(
-                              icon: Icons.phone_android,
-                              textEditingController: phoneController,
-                              hintText: 'Teléfono',
-                              textInputType: TextInputType.phone),
                           if (isSign == false)
                             Column(children: [
+                              InputText(
+                                  icon: Icons.phone_android,
+                                  textEditingController: phoneController,
+                                  hintText: 'Teléfono',
+                                  textInputType: TextInputType.phone),
                               InputText(
                                   icon: Icons.school,
                                   textEditingController: schoolController,
@@ -124,7 +94,11 @@ class _SignScreenState extends State<SignScreen> {
                                   textInputType: TextInputType.text),
                               const SizedBox(height: 8),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  showSnackBar(context, "Mensaje",
+                                      "Revise su email para validar la aplicación");
+                                  isSign = true;
+                                },
                                 style: ElevatedButton.styleFrom(
                                   textStyle: const TextStyle(
                                     fontSize: 18, //fontWeight: FontWeight.bold
@@ -185,79 +159,5 @@ class _SignScreenState extends State<SignScreen> {
             ])),
       ),
     );
-  }
-
-  void showImagePickerOption(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          return Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 8,
-              child: Row(children: [
-                Expanded(
-                    child: InkWell(
-                  onTap: () {
-                    _pickImageFromGallery();
-                  },
-                  child: const SizedBox(
-                      child: Column(
-                    children: [
-                      Icon(
-                        Icons.image,
-                        color: Tema.histologyBkcg,
-                        size: 48,
-                      ),
-                      Text("Galeria")
-                    ],
-                  )),
-                )),
-                Expanded(
-                    child: InkWell(
-                  onTap: () {
-                    _pickImageFromCamera();
-                  },
-                  child: const SizedBox(
-                      child: Column(
-                    children: [
-                      Icon(
-                        Icons.camera_alt,
-                        color: Tema.histologyBkcg,
-                        size: 48,
-                      ),
-                      Text("Cámara")
-                    ],
-                  )),
-                )),
-              ]),
-            ),
-          );
-        });
-  }
-
-  //Gallery
-  Future _pickImageFromGallery() async {
-    final returnImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (returnImage == null) return;
-    setState(() {
-      selectedIMage = File(returnImage.path);
-      _image = File(returnImage.path).readAsBytesSync();
-    });
-    // Navigator.of(context).pop(); //close the model sheet
-  }
-
-//Camera
-  Future _pickImageFromCamera() async {
-    final returnImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-    if (returnImage == null) return;
-    setState(() {
-      selectedIMage = File(returnImage.path);
-      _image = File(returnImage.path).readAsBytesSync();
-    });
-    // Navigator.of(context).pop();
   }
 }
