@@ -97,7 +97,9 @@ class _SignScreenState extends State<SignScreen> {
                                 onPressed: () {
                                   showSnackBar(context, "Mensaje",
                                       "Revise su email para validar la aplicación");
-                                  isSign = true;
+                                  setState(() {
+                                    isSign = true;
+                                  });
                                 },
                                 style: ElevatedButton.styleFrom(
                                   textStyle: const TextStyle(

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:histology/global/colores.dart';
 
@@ -9,15 +8,17 @@ class InputText extends StatelessWidget {
   final IconData? icon;
   final TextInputType textInputType;
   final double? fontSize;
+  final bool mayuscula;
 
   const InputText({
     super.key,
     required this.textEditingController,
+    required this.textInputType,
+    required this.hintText,
+    this.mayuscula = false,
     this.isPass = false,
     this.fontSize,
-    required this.hintText,
     this.icon,
-    required this.textInputType,
   });
 
   @override
@@ -27,6 +28,12 @@ class InputText extends StatelessWidget {
         child: Column(
           children: [
             TextField(
+                textCapitalization: mayuscula
+                    ? TextCapitalization.characters
+                    : TextCapitalization.none,
+                inputFormatters: mayuscula
+                    ? [FilteringTextInputFormatter.allow(RegExp('[A-Z]'))]
+                    : [],
                 controller: textEditingController,
                 keyboardType: textInputType,
                 obscureText: isPass,
@@ -38,9 +45,9 @@ class InputText extends StatelessWidget {
                   ),
                   prefixIconColor: Tema.histologyBkcg,
                 ),
-                style:  TextStyle(
-                  fontSize: fontSize ,
-                  color:Colors.black,
+                style: TextStyle(
+                  fontSize: fontSize,
+                  color: Colors.black,
                   //fontWeight: FontWeight.bold,
                 )),
             Text(
