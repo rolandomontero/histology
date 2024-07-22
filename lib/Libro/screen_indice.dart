@@ -15,6 +15,7 @@ class _ScreenIndiceState extends State<ScreenIndice> {
 
   @override
   Widget build(BuildContext context) {
+    const int currentPageIndex = 0;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Histology +'),
@@ -56,29 +57,51 @@ class _ScreenIndiceState extends State<ScreenIndice> {
           ]),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            switch (index) {
+              case 0:
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ScreenIndice(),
+                    fullscreenDialog:
+                        true, // Esto hace que sea un diálogo a pantalla completa
+                  ),
+                );
+            }
+          });
+        },
+        indicatorColor: histologyBkcg,
+        selectedIndex: currentPageIndex,
+        backgroundColor: histologyColor,
+        animationDuration: const Duration(milliseconds: 1000),
+        destinations: const <Widget>[
+          NavigationDestination(
+            selectedIcon: Icon(
+              Icons.bookmark,
+              color: Colors.white,
+            ),
             icon: Icon(Icons.bookmark),
             label: 'Lecciones',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.chat_bubble),
             label: 'Mensajes',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.emoji_events),
             label: 'Progreso',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
+            selectedIcon: Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
             icon: Icon(Icons.person),
             label: 'Perfil',
           ),
         ],
-        selectedItemColor: const Color(0xffffffff),
-        unselectedItemColor: histologyColor,
-        backgroundColor: histologyBkcg,
       ),
     );
   }

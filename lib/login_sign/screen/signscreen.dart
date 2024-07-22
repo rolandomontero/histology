@@ -21,6 +21,9 @@ class _SignScreenState extends State<SignScreen> {
   final TextEditingController phoneController =
       MaskedTextController(mask: '+56900000000', text: '+56');
   final TextEditingController schoolController = TextEditingController();
+  final TextEditingController activaController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passverifiController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +73,10 @@ class _SignScreenState extends State<SignScreen> {
                         children: [
                           const SizedBox(height: 12.0),
                           const ShowProfile(editar: true),
-                          InputText(
+                        
+                          if (isSign == false)
+                            Column(children: [
+                                InputText(
                               icon: Icons.person,
                               textEditingController: nameController,
                               hintText: 'Nombre(s) y apellido(s)',
@@ -80,8 +86,6 @@ class _SignScreenState extends State<SignScreen> {
                               textEditingController: emailController,
                               hintText: 'Correo eléctronico',
                               textInputType: TextInputType.emailAddress),
-                          if (isSign == false)
-                            Column(children: [
                               InputText(
                                   icon: Icons.phone_android,
                                   textEditingController: phoneController,
@@ -119,19 +123,27 @@ class _SignScreenState extends State<SignScreen> {
                           else if (isSign == true)
                             Column(
                               children: [
-                                const TextField(
-                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      // labelText: 'Tu Nombre',
-                                      // prefixIcon: Icon(Icons.person),
-                                      prefixIconColor: Tema.histologyBkcg,
-                                    ),
-                                    style: TextStyle(
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.bold,
-                                        color: Tema.histologyBkcg)),
-                                const Text(
-                                  'Código activación',
+                                InputText(
+                                  textEditingController: passwordController,
+                                  textInputType: TextInputType.datetime,
+                                  hintText: 'Contraseña',
+                                  isPass: true,
+                                ),
+                                InputText(
+                                  textEditingController: passwordController,
+                                  textInputType: TextInputType.datetime,
+                                  hintText: 'Repetir contraseña',
+                                  isPass: true,
+                                ),
+                                InputText(
+                                  textEditingController: activaController,
+                                  hintText: 'Código de activación',
+                                  textInputType: TextInputType.text,
+                                  fontSize: 32.0,
+                                  mayuscula: true,
+                                  textAlign: TextAlign.center,
+                                  colortext: Tema.histologyBkcg,
+                                  fontWeight: FontWeight.bold,
                                 ),
                                 const SizedBox(height: 32),
                                 ElevatedButton(

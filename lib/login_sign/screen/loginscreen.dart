@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:histology/Libro/screen_indice.dart';
 import 'package:histology/global/colores.dart';
-import 'package:histology/login_sign/screen/signscreen.dart'; 
+import 'package:histology/login_sign/screen/signscreen.dart';
 import 'package:histology/login_sign/Widget/input_text.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   static const Color histologyBkcg = Color(0xFF895476);
   static const Color histologyColor = Color(0xFFF2F0E0);
   String usuario = '';
-  int currentPageIndex = 3;
+  static const int currentPageIndex = 3;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isLoading = false;
@@ -98,7 +99,16 @@ class _LoginScreenState extends State<LoginScreen> {
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
-            currentPageIndex = index;
+            switch (index) {
+              case 0:
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ScreenIndice(),
+                    fullscreenDialog:
+                        true, // Esto hace que sea un diálogo a pantalla completa
+                  ),
+                );
+            }
           });
         },
         indicatorColor: histologyBkcg,
@@ -199,8 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Tema.histologyBkcg,
-                      
-                      ),
+                    ),
                   ),
                 )
               ],
