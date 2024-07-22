@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:histology/Libro/screen_indice.dart';
 import 'package:histology/global/colores.dart';
+import 'package:histology/global/widgetprofile.dart';
 import 'package:histology/login_sign/screen/signscreen.dart';
 import 'package:histology/login_sign/Widget/input_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,19 +17,29 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   static const Color histologyBkcg = Color(0xFF895476);
   static const Color histologyColor = Color(0xFFF2F0E0);
-  String usuario = '';
   static const int currentPageIndex = 3;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool isLoading = false;
   final bool registrado = false;
+  String nombre = '';
+  String email = '';
+
+  bool isLoading = false;
 
   @override
   void dispose() {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    _loadData();
+  }
 
+  Future<void> _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      nombre = prefs.getString('nombre') ?? '';
+      email = prefs.getString('email') ?? '';
+    });
   }
 
   @override
@@ -48,8 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         actions: [
           IconButton(
-            icon:  Icon(registrado ?
-              Icons.person: Icons.person_off,
+            icon: Icon(
+              registrado ? Icons.person : Icons.person_off,
               color: Colors.white,
               size: 32,
             ),
@@ -86,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       // Opacidad del 20%
                       ),
-                  child: login(usuario),
+                  child: registrado ? userProfile() : login(),
                 ),
               )
             ])),
@@ -136,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget login(usuario) {
+  Widget login() {
     return Padding(
       padding: const EdgeInsets.all(14.0),
       child: Column(
@@ -209,16 +221,13 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget userProfile(usuario) {
+  Widget userProfile() {
     return Padding(
       padding: const EdgeInsets.all(14.0),
       child: Column(
         children: [
           const SizedBox(height: 12.0),
-          const CircleAvatar(
-            radius: 64,
-            backgroundImage: AssetImage('assets/images/icons/user.png'),
-          ),
+          const ShowProfile(editar: false),
           const SizedBox(height: 42.0),
           const TextField(
               textAlign: TextAlign.center,

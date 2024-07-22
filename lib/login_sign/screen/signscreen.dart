@@ -6,6 +6,7 @@ import 'package:histology/login_sign/Widget/input_text.dart';
 import 'package:histology/login_sign/Widget/snackbar.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:histology/login_sign/screen/loginscreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignScreen extends StatefulWidget {
   const SignScreen({super.key});
@@ -23,8 +24,23 @@ class _SignScreenState extends State<SignScreen> {
       MaskedTextController(mask: '+56900000000', text: '+56');
   final TextEditingController schoolController = TextEditingController();
   final TextEditingController activaController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController passverifiController = TextEditingController();
+
+  Future<void> _saveData() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (isSign) {
+      await prefs.setString('nombre', nameController.text);
+      await prefs.setString('email', emailController.text);
+      await prefs.setString('telefono', phoneController.text);
+      await prefs.setString('colegio', schoolController.text);
+    }
+  }
+
+  Future<void> _saveDataActivacion() async {
+    if (activaController.text.isNotEmpty) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('activado', activaController.text);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +118,7 @@ class _SignScreenState extends State<SignScreen> {
                                   showSnackBar(context, "Mensaje",
                                       "Revise su email para validar la aplicación");
                                   setState(() {
+                                    _saveData();
                                     isSign = true;
                                   });
                                 },
@@ -139,6 +156,7 @@ class _SignScreenState extends State<SignScreen> {
                                 const SizedBox(height: 32),
                                 ElevatedButton(
                                   onPressed: () {
+                                    _saveDataActivacion();
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>

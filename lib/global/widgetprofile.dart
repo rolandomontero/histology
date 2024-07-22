@@ -1,9 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:histology/global/colores.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowProfile extends StatefulWidget {
   final bool editar;
@@ -18,10 +19,33 @@ class ShowProfile extends StatefulWidget {
   _ShowProfileState createState() => _ShowProfileState();
 }
 
-
 class _ShowProfileState extends State<ShowProfile> {
   Uint8List? imagen;
   File? selectedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final imgString = prefs.getString('imgProfile');
+    if (imgString != null) {
+      setState(() {
+        imagen = base64Decode(imgString);
+      });
+    }
+  }
+
+  Future<void> _saveData() async {
+    if (imagen != null) {
+      final prefs = await SharedPreferences.getInstance();
+      final imgString = base64Encode(imagen!);
+      await prefs.setString('imgProfile', imgString);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +60,21 @@ class _ShowProfileState extends State<ShowProfile> {
                 radius: 64,
                 backgroundImage: AssetImage('assets/images/icons/user.png'),
               ),
-        if(widget.editar)
-                Positioned(
-          bottom: -.0,
-          right: -1.0,
-          child: IconButton(
-            onPressed: () {
-              showImagePickerOption(context);
-            },
-            icon: const Icon(
-              Icons.add_a_photo,
-              color: Tema.histologyBkcg,
-              size: 32,
+        if (widget.editar)
+          Positioned(
+            bottom: -.0,
+            right: -1.0,
+            child: IconButton(
+              onPressed: () {
+                showImagePickerOption(context);
+              },
+              icon: const Icon(
+                Icons.add_a_photo,
+                color: Tema.histologyBkcg,
+                size: 32,
+              ),
             ),
-          ),
-        )
+          )
       ],
     );
   }
@@ -58,13 +82,12 @@ class _ShowProfileState extends State<ShowProfile> {
   void showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
       barrierLabel: "Seleccione medio",
-      backgroundColor: Tema.histologySolid, 
+      backgroundColor: Tema.histologySolid,
       context: context,
       builder: (builder) {
         return Padding(
           padding: const EdgeInsets.all(18.0),
           child: SizedBox(
-            
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height / 8,
             child: Row(
@@ -79,7 +102,9 @@ class _ShowProfileState extends State<ShowProfile> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                            SizedBox(height: 12,),
+                          SizedBox(
+                            height: 12,
+                          ),
                           Icon(
                             Icons.image,
                             color: Tema.histologyBkcg,
@@ -101,7 +126,9 @@ class _ShowProfileState extends State<ShowProfile> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(height: 12,),
+                          SizedBox(
+                            height: 12,
+                          ),
                           Icon(
                             Icons.camera_alt,
                             color: Tema.histologyBkcg,
@@ -122,20 +149,24 @@ class _ShowProfileState extends State<ShowProfile> {
   }
 
   Future<void> pickImagenFromGallery() async {
-    final returnImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnImage == null) return;
     setState(() {
       selectedImage = File(returnImage.path);
       imagen = File(returnImage.path).readAsBytesSync();
+      _saveData();
     });
   }
 
   Future<void> pickImagenFromCamera() async {
-    final returnImage = await ImagePicker().pickImage(source: ImageSource.camera);
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
     if (returnImage == null) return;
     setState(() {
       selectedImage = File(returnImage.path);
       imagen = File(returnImage.path).readAsBytesSync();
+      _saveData();
     });
   }
 }

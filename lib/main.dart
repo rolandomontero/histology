@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:histology/Libro/screen_indice.dart';
-import 'package:histology/login_sign/screen/loginscreen.dart';
 import 'package:histology/web_view_container.dart';
 
 void main() => runApp(MaterialApp(
