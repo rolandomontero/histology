@@ -5,6 +5,7 @@ import 'package:histology/global/widgetprofile.dart';
 import 'package:histology/login_sign/Widget/input_text.dart';
 import 'package:histology/login_sign/Widget/snackbar.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:histology/login_sign/screen/loginscreen.dart';
 
 class SignScreen extends StatefulWidget {
   const SignScreen({super.key});
@@ -73,19 +74,18 @@ class _SignScreenState extends State<SignScreen> {
                         children: [
                           const SizedBox(height: 12.0),
                           const ShowProfile(editar: true),
-                        
                           if (isSign == false)
                             Column(children: [
-                                InputText(
-                              icon: Icons.person,
-                              textEditingController: nameController,
-                              hintText: 'Nombre(s) y apellido(s)',
-                              textInputType: TextInputType.text),
-                          InputText(
-                              icon: Icons.email,
-                              textEditingController: emailController,
-                              hintText: 'Correo eléctronico',
-                              textInputType: TextInputType.emailAddress),
+                              InputText(
+                                  icon: Icons.person,
+                                  textEditingController: nameController,
+                                  hintText: 'Nombre(s) y apellido(s)',
+                                  textInputType: TextInputType.text),
+                              InputText(
+                                  icon: Icons.email,
+                                  textEditingController: emailController,
+                                  hintText: 'Correo eléctronico',
+                                  textInputType: TextInputType.emailAddress),
                               InputText(
                                   icon: Icons.phone_android,
                                   textEditingController: phoneController,
@@ -123,17 +123,8 @@ class _SignScreenState extends State<SignScreen> {
                           else if (isSign == true)
                             Column(
                               children: [
-                                InputText(
-                                  textEditingController: passwordController,
-                                  textInputType: TextInputType.datetime,
-                                  hintText: 'Contraseña',
-                                  isPass: true,
-                                ),
-                                InputText(
-                                  textEditingController: passwordController,
-                                  textInputType: TextInputType.datetime,
-                                  hintText: 'Repetir contraseña',
-                                  isPass: true,
+                                const SizedBox(
+                                  height: 48,
                                 ),
                                 InputText(
                                   textEditingController: activaController,
@@ -147,7 +138,14 @@ class _SignScreenState extends State<SignScreen> {
                                 ),
                                 const SizedBox(height: 32),
                                 ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginScreen(),
+                                      ),
+                                    );
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     textStyle: const TextStyle(
                                       fontSize:

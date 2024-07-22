@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:histology/Libro/class_indice.dart';
+import 'package:histology/login_sign/screen/loginscreen.dart';
 
 class ScreenIndice extends StatefulWidget {
   const ScreenIndice({super.key});
@@ -18,7 +19,17 @@ class _ScreenIndiceState extends State<ScreenIndice> {
     const int currentPageIndex = 0;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Histology +'),
+         automaticallyImplyLeading: false,
+         title: Center(
+          child: Text(
+            "Lecciones",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.acme(
+                color: Colors.white,
+                fontSize: 42.0,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
         centerTitle: true,
         titleTextStyle: const TextStyle(
             color: Colors.white,
@@ -50,6 +61,9 @@ class _ScreenIndiceState extends State<ScreenIndice> {
             ),
           ),
           child: Column(children: [
+              const SizedBox(
+                height: 22,
+              ),
             content(),
             Expanded(
               child: listaContenidos(temas),
@@ -61,10 +75,10 @@ class _ScreenIndiceState extends State<ScreenIndice> {
         onDestinationSelected: (int index) {
           setState(() {
             switch (index) {
-              case 0:
+              case 3:
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const ScreenIndice(),
+                    builder: (context) => const LoginScreen(),
                     fullscreenDialog:
                         true, // Esto hace que sea un diálogo a pantalla completa
                   ),

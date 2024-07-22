@@ -20,27 +20,21 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isLoading = false;
+  final bool registrado = false;
 
   @override
   void dispose() {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.person,
-            color: Colors.white,
-            size: 48.0,
-          ),
-          alignment: Alignment.topLeft,
-          onPressed: () {},
-        ),
+        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF3A9DE9),
         title: Center(
           child: Text(
@@ -54,9 +48,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.notifications,
+            icon:  Icon(registrado ?
+              Icons.person: Icons.person_off,
               color: Colors.white,
+              size: 32,
             ),
             onPressed: () {},
           ),
@@ -113,8 +108,6 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         indicatorColor: histologyBkcg,
         selectedIndex: currentPageIndex,
-        // selectedItemColor: Colors.black,
-        // unselectedItemColor: Colors.grey,
         backgroundColor: histologyColor,
         animationDuration: const Duration(milliseconds: 1000),
         destinations: const <Widget>[
@@ -135,10 +128,6 @@ class _LoginScreenState extends State<LoginScreen> {
             label: 'Progreso',
           ),
           NavigationDestination(
-            selectedIcon: Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
             icon: Icon(Icons.person),
             label: 'Perfil',
           ),
