@@ -13,6 +13,7 @@ class InputText extends StatelessWidget {
   final Color colortext;
   final FontWeight? fontWeight;
   final TextAlign textAlign;
+  final IconData? iconEdit;
 
   const InputText(
       {super.key,
@@ -23,6 +24,7 @@ class InputText extends StatelessWidget {
       this.isPass = false,
       this.fontSize,
       this.icon,
+      this.iconEdit,
       this.colortext = Colors.black,
       this.fontWeight = FontWeight.normal,
       this.textAlign = TextAlign.start});
