@@ -42,6 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       nombre = prefs.getString('nombre') ?? '';
       email = prefs.getString('email') ?? '';
+      isSign = ( prefs.getString('activado') ?? '')!=''?true:false;
+      registrado = ( prefs.getString('registrado') ?? '')=='1'?true:false;;
     });
   }
 
@@ -120,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   MaterialPageRoute(
                     builder: (context) => const ScreenIndice(),
                     fullscreenDialog:
-                        true, // Esto hace que sea un diálogo a pantalla completa
+                        true,
                   ),
                 );
             }
@@ -257,6 +259,7 @@ return
           onPressed: () {
             setState(() {
               registrado = true;
+              _saveDataActivacion();
             });
           },
           style: ElevatedButton.styleFrom(
@@ -298,36 +301,16 @@ return
             'email',
           ),
           const SizedBox(height: 42.0),
-          const TextField(
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                prefixIconColor: Tema.histologyBkcg,
-              ),
-              style: TextStyle(
-                fontSize: 22,
-              )),
+          const InputText(
+
+          ),
+
           const Text(
             'Contraseña',
           ),
           const SizedBox(height: 40),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              textStyle: const TextStyle(
-                fontSize: 18,
-                //fontWeight: FontWeight.bold
-              ),
-              // Cambia el color del botón a verde
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(20), // Agrega bordes redondeados
-              ),
-              foregroundColor: Colors.white,
-              backgroundColor: const Color(0xFF3A9DE9),
-            ),
-            child: const Text('Iniciar sesión'),
-          ),
-          const SizedBox(height: 30),
+
+
         ],
       ),
     );
