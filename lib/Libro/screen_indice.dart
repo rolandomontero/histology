@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:histology/Libro/class_indice.dart';
+import 'package:histology/global/colores.dart';
 import 'package:histology/login_sign/screen/loginscreen.dart';
 
 class ScreenIndice extends StatefulWidget {
@@ -11,9 +12,6 @@ class ScreenIndice extends StatefulWidget {
 }
 
 class _ScreenIndiceState extends State<ScreenIndice> {
-  static const Color histologyBkcg = Color(0xFF895476);
-  static const Color histologyColor = Color(0xDCE8D9C7);
-
   @override
   Widget build(BuildContext context) {
     const int currentPageIndex = 0;
@@ -37,7 +35,7 @@ class _ScreenIndiceState extends State<ScreenIndice> {
             fontSize: 22,
             fontWeight: FontWeight.bold),
         // toolbarHeight: 80,
-        backgroundColor: histologyBkcg,
+        backgroundColor: Tema.histologyBkcg,
         elevation: 8.0,
         shadowColor: Colors.grey,
         //automaticallyImplyLeading: false,
@@ -61,9 +59,7 @@ class _ScreenIndiceState extends State<ScreenIndice> {
             ),
           ),
           child: Column(children: [
-              const SizedBox(
-                height: 22,
-              ),
+              const SizedBox(  height: 22,        ),
             content(),
             Expanded(
               child: listaContenidos(temas),
@@ -80,15 +76,15 @@ class _ScreenIndiceState extends State<ScreenIndice> {
                   MaterialPageRoute(
                     builder: (context) => const LoginScreen(),
                     fullscreenDialog:
-                        true, // Esto hace que sea un diálogo a pantalla completa
+                        true,
                   ),
                 );
             }
           });
         },
-        indicatorColor: histologyBkcg,
+        indicatorColor: Tema.histologyBkcg,
         selectedIndex: currentPageIndex,
-        backgroundColor: histologyColor,
+        backgroundColor: Tema.histologyColor,
         animationDuration: const Duration(milliseconds: 1000),
         destinations: const <Widget>[
           NavigationDestination(
@@ -108,10 +104,6 @@ class _ScreenIndiceState extends State<ScreenIndice> {
             label: 'Progreso',
           ),
           NavigationDestination(
-            selectedIcon: Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
             icon: Icon(Icons.person),
             label: 'Perfil',
           ),
@@ -217,7 +209,7 @@ class _ScreenIndiceState extends State<ScreenIndice> {
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           );
         });
