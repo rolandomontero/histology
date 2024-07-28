@@ -1,12 +1,17 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:histology/Libro/screen_indice.dart';
-import 'package:histology/global/colores.dart';
+import 'package:histology/global/constantes.dart';
 import 'package:histology/global/widgetprofile.dart';
 import 'package:histology/login_sign/screen/signscreen.dart';
 import 'package:histology/login_sign/Widget/input_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Widget/snackbar.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
+import 'dart:math';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,18 +21,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  final String senderEmail = 'app@histologyplus.mclautaro.cl';
+  final String senderPassword = 'Rmx21071972#';
+ 
+  String verificationCode = '';
   bool isSign = false;
   bool registrado = false;
   bool isLoading = false;
-
   String nombre = '';
   String email = '';
+
   static const int currentPageIndex = 3;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController activaController = TextEditingController(); 
-
-
-
 
   @override
   void dispose() {
@@ -37,13 +44,55 @@ class _LoginScreenState extends State<LoginScreen> {
     _loadData();
   }
 
+  String generateRandomCode() {
+  final random = Random();
+  final letters = List.generate(3, (_) => String.fromCharCode(65 + random.nextInt(26))).join();
+  final number = random.nextInt(9000) + 1000;
+  return '$letters$number';
+}
+
+  Future<void> sendEmail() async {
+    final smtpServer = SmtpServer('histologyplus.mclautaro.cl',
+        username: senderEmail, password: senderPassword);
+    verificationCode = generateRandomCode();
+
+
+    final message = Message()
+      ..from = Address(senderEmail, 'App')
+      ..recipients.add(email)
+      ..subject = 'Código de Verificación: $verificationCode ${DateTime.now()}'
+      //..text = 'Su código de verificación es: $verificationCode'
+       ..html = '<img src="cid:myimg@3.141"/><h2>Hola!, $nombre</h2>\n<p>Introduce el código manualmente en la aplicación. Aquí está el código:</p><H1>$verificationCode</H1>'
+    ..attachments = [
+      FileAttachment(File('assets/images/eicon.png'))
+        ..location = Location.inline
+        ..cid = '<myimg@3.141>'
+    ];
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      if (kDebugMode) {
+        print('Mensaje enviado: $sendReport');
+      }
+    } on MailerException catch (e) {
+      if (kDebugMode) {
+        print('Error al enviar el mensaje: $e');
+      }
+      for (var p in e.problems) {
+        if (kDebugMode) {
+          print('Problema: ${p.code}: ${p.msg}');
+        }
+      }
+    }
+  }
+
   Future<void> _loadData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       nombre = prefs.getString('nombre') ?? '';
       email = prefs.getString('email') ?? '';
       isSign = ( prefs.getString('activado') ?? '')!=''?true:false;
-      registrado = ( prefs.getString('registrado') ?? '')=='1'?true:false;;
+      registrado = ( prefs.getString('registrado') ?? '')=='1'?true:false;
     });
   }
 
@@ -189,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ElevatedButton(
           onPressed: () {
             showSnackBar(context, "Mensaje",
-                "Revise su email para validar la aplicación");
+                "Revise su email para validar la aplicación \n el mail es app.");
             setState(() {
               isSign = true;
             });
@@ -282,14 +331,14 @@ return
   }
 
   Widget userProfile() {
-    return Padding(
-      padding: const EdgeInsets.all(14.0),
+    return const Padding(
+      padding: EdgeInsets.all(14.0),
       child: Column(
         children: [
-          const SizedBox(height: 12.0),
-          const ShowProfile(editar: false),
-          const SizedBox(height: 42.0),
-          const TextField(
+          SizedBox(height: 12.0),
+          ShowProfile(editar: false),
+          SizedBox(height: 42.0),
+          TextField(
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 prefixIconColor: Tema.histologyBkcg,
@@ -297,18 +346,16 @@ return
               style: TextStyle(
                 fontSize: 22,
               )),
-          const Text(
+          Text(
             'email',
           ),
-          const SizedBox(height: 42.0),
-          const InputText(
+          SizedBox(height: 42.0),
+         
 
-          ),
-
-          const Text(
+          Text(
             'Contraseña',
           ),
-          const SizedBox(height: 40),
+          SizedBox(height: 40),
 
 
         ],

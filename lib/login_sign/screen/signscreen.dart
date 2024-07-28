@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:histology/global/colores.dart';
+import 'package:histology/global/constantes.dart';
 import 'package:histology/global/widgetprofile.dart';
 import 'package:histology/login_sign/Widget/input_text.dart';
 import 'package:histology/login_sign/Widget/snackbar.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:histology/login_sign/screen/loginscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:flutter/foundation.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
+import 'dart:math';
 
 class SignScreen extends StatefulWidget {
   const SignScreen({super.key});
@@ -25,8 +30,56 @@ class _SignScreenState extends State<SignScreen> {
   final TextEditingController schoolController = TextEditingController();
   final TextEditingController activaController = TextEditingController();
 
+  final String senderEmail = 'app@histologyplus.mclautaro.cl';
+  final String senderPassword = 'Rmx21071972#';
+
+  String verificationCode = '';
+  bool registrado = false;
+  bool isLoading = false;
+
+  String generateRandomCode() {
+    final random = Random();
+    final letters =
+        List.generate(3, (_) => String.fromCharCode(65 + random.nextInt(26)))
+            .join();
+    final number = random.nextInt(9000) + 1000;
+    return '$letters$number';
+  }
+
+  Future<void> sendEmail(nombre, email) async {
+    final smtpServer = SmtpServer('histologyplus.mclautaro.cl',
+        port: 465, ssl: true, username: senderEmail, password: senderPassword);
+    verificationCode = generateRandomCode();
+    final message = Message()
+      ..from = Address(senderEmail, 'App')
+      ..recipients.add(email)
+      ..subject = 'Código de Verificación: $verificationCode'
+      ..text = 'Su código de verificación es: $verificationCode'
+      ..html =
+          '<center><img src="https://histologyplus.mclautaro.cl/img/eicon.png" width="64" height="64"/><p>Hisology Plus</p></center><br> <h1>Hola!, $nombre</h1>\n<p>Introduce el código manualmente en la aplicación. Aquí está el código:</p><center><H2>$verificationCode</H2>';
+
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      if (kDebugMode) {
+        print('Mensaje enviado: $sendReport');
+      }
+    } on MailerException catch (e) {
+      if (kDebugMode) {
+        print('Error al enviar el mensaje: $e');
+      }
+      for (var p in e.problems) {
+        if (kDebugMode) {
+          print('Problema: ${p.code}: ${p.msg}');
+        }
+      }
+    }
+  }
+
   Future<void> _saveData() async {
+    await sendEmail(nameController.text, emailController.text);
     final prefs = await SharedPreferences.getInstance();
+
     if (isSign) {
       await prefs.setString('nombre', nameController.text);
       await prefs.setString('email', emailController.text);
@@ -116,10 +169,10 @@ class _SignScreenState extends State<SignScreen> {
                               ElevatedButton(
                                 onPressed: () {
                                   showSnackBar(context, "Mensaje",
-                                      "Revise su email para validar la aplicación");
+                                      "Revise su email para validar la aplicación \n Si no lo encuentra busque en spam, como app@histologyplus.mclautaro.cl");
                                   setState(() {
-                                    _saveData();
                                     isSign = true;
+                                    _saveData();
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -149,7 +202,7 @@ class _SignScreenState extends State<SignScreen> {
                                   textInputType: TextInputType.text,
                                   fontSize: 32.0,
                                   mayuscula: true,
-                                  textAlign: TextAlign.center,
+                                  //textAlign: TextAlign.center,
                                   colortext: Tema.histologyBkcg,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -157,12 +210,18 @@ class _SignScreenState extends State<SignScreen> {
                                 ElevatedButton(
                                   onPressed: () {
                                     _saveDataActivacion();
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginScreen(),
-                                      ),
-                                    );
+                                    if (activaController.text ==
+                                        verificationCode) {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const LoginScreen(),
+                                        ),
+                                      );
+                                    } else {
+                                      showSnackBar(context, "Error",
+                                          "La clave no corresponde a la enviada.\n Intente de nuevo.");
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     textStyle: const TextStyle(
@@ -181,7 +240,6 @@ class _SignScreenState extends State<SignScreen> {
                                 ),
                               ],
                             ),
-
                           const SizedBox(height: 16),
                         ],
                       ),

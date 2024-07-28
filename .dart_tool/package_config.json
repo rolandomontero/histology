@@ -273,7 +273,7 @@
     },
     {
       "name": "intl",
-      "rootUri": "file:///C:/Users/rolan/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.18.1",
+      "rootUri": "file:///C:/Users/rolan/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.17.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -318,6 +318,12 @@
       "rootUri": "file:///C:/Users/rolan/AppData/Local/Pub/Cache/hosted/pub.dev/logging-1.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "mailer",
+      "rootUri": "file:///C:/Users/rolan/AppData/Local/Pub/Cache/hosted/pub.dev/mailer-6.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "matcher",
@@ -686,7 +692,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-07-22T13:30:36.805339Z",
+  "generated": "2024-08-02T21:10:41.784895Z",
   "generator": "pub",
   "generatorVersion": "3.4.4",
   "flutterRoot": "file:///D:/flutter",

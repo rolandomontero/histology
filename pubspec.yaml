@@ -41,7 +41,7 @@ dependencies:
   from_css_color: 2.0.0
   go_router: 7.1.1
   google_fonts: 6.1.0
-  intl: 0.18.1
+  intl: ^0.17.0
   json_path: 0.6.2
   page_transition: 2.1.0
   path_provider: 2.0.14
@@ -61,12 +61,14 @@ dependencies:
   url_launcher_android: 6.0.27
   url_launcher_ios: 6.1.4
   url_launcher_platform_interface: 2.1.2
+  mailer: ^6.1.2
 
  
   cupertino_icons: ^1.0.2
   webview_flutter: ^4.5.0
   image_picker: ^1.0.8
   flutter_masked_text2: ^0.9.1
+
 
 
 dev_dependencies:

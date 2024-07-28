@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:histology/global/colores.dart';
+import 'package:histology/global/constantes.dart';
 
 class InputText extends StatelessWidget {
   final TextEditingController textEditingController;

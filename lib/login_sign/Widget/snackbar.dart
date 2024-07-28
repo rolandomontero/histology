@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:histology/global/colores.dart';
+import 'package:histology/global/constantes.dart';
 
 showSnackBar(BuildContext context, String titulo, arg) {
   return ScaffoldMessenger.of(context).showSnackBar(
