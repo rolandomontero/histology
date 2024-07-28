@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
       nombre = prefs.getString('nombre') ?? '';
       email = prefs.getString('email') ?? '';
       isSign = ( prefs.getString('activado') ?? '')!=''?true:false;
-      registrado = ( prefs.getString('registrado') ?? '')=='1'?true:false;;
+      registrado = ( prefs.getString('registrado') ?? '')=='1'?true:false;
     });
   }
 
@@ -282,14 +282,14 @@ return
   }
 
   Widget userProfile() {
-    return Padding(
-      padding: const EdgeInsets.all(14.0),
+    return const Padding(
+      padding: EdgeInsets.all(14.0),
       child: Column(
         children: [
-          const SizedBox(height: 12.0),
-          const ShowProfile(editar: false),
-          const SizedBox(height: 42.0),
-          const TextField(
+          SizedBox(height: 12.0),
+          ShowProfile(editar: false),
+          SizedBox(height: 42.0),
+          TextField(
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 prefixIconColor: Tema.histologyBkcg,
@@ -297,18 +297,16 @@ return
               style: TextStyle(
                 fontSize: 22,
               )),
-          const Text(
+          Text(
             'email',
           ),
-          const SizedBox(height: 42.0),
-          const InputText(
+          SizedBox(height: 42.0),
+         
 
-          ),
-
-          const Text(
+          Text(
             'Contraseña',
           ),
-          const SizedBox(height: 40),
+          SizedBox(height: 40),
 
 
         ],
