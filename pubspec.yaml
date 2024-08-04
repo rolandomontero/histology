@@ -49,12 +49,12 @@ dependencies:
   path_provider_foundation: 2.2.2
   path_provider_platform_interface: 2.0.6
   provider: 6.0.5
-  shared_preferences: 2.2.2
+  shared_preferences: ^2.2.2
   shared_preferences_android: 2.2.1
   shared_preferences_foundation: 2.3.4
   shared_preferences_platform_interface: 2.3.1
   shared_preferences_web: 2.2.1
-  smooth_page_indicator: 1.1.0
+  smooth_page_indicator: ^1.1.0
   sqflite: 2.2.6
   timeago: 3.2.2
   url_launcher: 6.1.10
@@ -68,6 +68,8 @@ dependencies:
   webview_flutter: ^4.5.0
   image_picker: ^1.0.8
   flutter_masked_text2: ^0.9.1
+
+  flutter_launcher_icons: ^0.13.1
 
 
 
@@ -86,7 +88,7 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_icons:
-  android: 'launcher_icon'
+  android: true
   ios: true
   image_path: 'assets/images/icon.png'
   adaptive_icon_background: 'assets/images/icon.png'

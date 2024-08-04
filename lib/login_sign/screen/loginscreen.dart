@@ -33,16 +33,23 @@ class _LoginScreenState extends State<LoginScreen> {
   String email = '';
 
   static const int currentPageIndex = 3;
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController activaController = TextEditingController(); 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController activaController = TextEditingController(); 
 
   @override
   void dispose() {
     super.dispose();
     emailController.dispose();
     activaController.dispose();
+  
+  }
+
+  @override
+  void initState() {
+    super.initState();
     _loadData();
   }
+
 
   String generateRandomCode() {
   final random = Random();
@@ -90,9 +97,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       nombre = prefs.getString('nombre') ?? '';
-      email = prefs.getString('email') ?? '';
+      emailController.text = prefs.getString('email') ?? '';
       isSign = ( prefs.getString('activado') ?? '')!=''?true:false;
-      registrado = ( prefs.getString('registrado') ?? '')=='1'?true:false;
+      registrado = ( prefs.getString('registrado') ?? '')!=''?true:false;
     });
   }
 
@@ -207,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget login() {
     return Padding(
       padding: const EdgeInsets.all(14.0),
-      child: !isSign ?
+      child: isSign ?
       enterProfile():
       activaProfile(),
 
@@ -302,6 +309,7 @@ return
           textAlign: TextAlign.center,
           colortext: Tema.histologyBkcg,
           fontWeight: FontWeight.bold,
+          iconEdit: const Icon(Icons.clear),
         ),
         const SizedBox(height: 32),
         ElevatedButton(
