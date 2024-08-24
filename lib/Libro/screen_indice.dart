@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:histology/Libro/class_indice.dart';
 import 'package:histology/global/constantes.dart';
-import 'package:histology/login_sign/screen/loginscreen.dart';
+import 'package:histology/login_sign/screen/login_screen.dart';
 
 class ScreenIndice extends StatefulWidget {
   const ScreenIndice({super.key});

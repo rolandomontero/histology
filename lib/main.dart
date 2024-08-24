@@ -1,29 +1,22 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:histology/Libro/screen_indice.dart';
-import 'package:histology/web_view_container.dart';
 
-void main() => runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorSchemeSeed: const Color(0xFF895476),
-        brightness: Brightness.light,
-        useMaterial3: true,
-      ),
-      routes: {
-        '/': (context) => const HistologyClass(),
-        '/webViewContainer': (context) => const WebViewContainer()
-      },
-    ));
+import 'login_sign/screen/home_screen.dart';
 
-class HistologyClass extends StatefulWidget {
-  const HistologyClass({super.key});
-  @override
-  State<HistologyClass> createState() => _HistologyClassState();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
 }
 
-class _HistologyClassState extends State<HistologyClass> {
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return const ScreenIndice();
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+    );
   }
 }

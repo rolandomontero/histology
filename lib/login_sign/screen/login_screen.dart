@@ -5,13 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:histology/Libro/screen_indice.dart';
 import 'package:histology/global/constantes.dart';
 import 'package:histology/global/widgetprofile.dart';
-import 'package:histology/login_sign/screen/signscreen.dart';
+import 'package:histology/login_sign/screen/sign_screen.dart';
 import 'package:histology/login_sign/Widget/input_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Widget/snackbar.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'dart:math';
+import 'package:histology/login_sign/services/authentication.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,27 +22,30 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final String senderEmail = 'app@histologyplus.mclautaro.cl';
   final String senderPassword = 'Rmx21071972#';
- 
+
   String verificationCode = '';
   bool isSign = false;
   bool registrado = false;
   bool isLoading = false;
   String nombre = '';
   String email = '';
+  String pass = '';
+  String res = '';
 
   static const int currentPageIndex = 3;
   TextEditingController emailController = TextEditingController();
-  TextEditingController activaController = TextEditingController(); 
+  TextEditingController passwordController = TextEditingController();  
+  TextEditingController repasswordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController activaController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     emailController.dispose();
     activaController.dispose();
-  
   }
 
   @override
@@ -50,31 +54,32 @@ class _LoginScreenState extends State<LoginScreen> {
     _loadData();
   }
 
-
   String generateRandomCode() {
-  final random = Random();
-  final letters = List.generate(3, (_) => String.fromCharCode(65 + random.nextInt(26))).join();
-  final number = random.nextInt(9000) + 1000;
-  return '$letters$number';
-}
+    final random = Random();
+    final letters =
+        List.generate(3, (_) => String.fromCharCode(65 + random.nextInt(26)))
+            .join();
+    final number = random.nextInt(9000) + 1000;
+    return '$letters$number';
+  }
 
   Future<void> sendEmail() async {
     final smtpServer = SmtpServer('histologyplus.mclautaro.cl',
         username: senderEmail, password: senderPassword);
     verificationCode = generateRandomCode();
 
-
     final message = Message()
       ..from = Address(senderEmail, 'App')
       ..recipients.add(email)
       ..subject = 'Código de Verificación: $verificationCode ${DateTime.now()}'
       //..text = 'Su código de verificación es: $verificationCode'
-       ..html = '<img src="cid:myimg@3.141"/><h2>Hola!, $nombre</h2>\n<p>Introduce el código manualmente en la aplicación. Aquí está el código:</p><H1>$verificationCode</H1>'
-    ..attachments = [
-      FileAttachment(File('assets/images/eicon.png'))
-        ..location = Location.inline
-        ..cid = '<myimg@3.141>'
-    ];
+      ..html =
+          '<img src="cid:myimg@3.141"/><h2>Hola!, $nombre</h2>\n<p>Introduce el código manualmente en la aplicación. Aquí está el código:</p><H1>$verificationCode</H1>'
+      ..attachments = [
+        FileAttachment(File('assets/images/eicon.png'))
+          ..location = Location.inline
+          ..cid = '<myimg@3.141>'
+      ];
 
     try {
       final sendReport = await send(message, smtpServer);
@@ -98,9 +103,12 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       nombre = prefs.getString('nombre') ?? '';
       emailController.text = prefs.getString('email') ?? '';
-      isSign = ( prefs.getString('activado') ?? '')!=''?true:false;
-      registrado = ( prefs.getString('registrado') ?? '')!=''?true:false;
+      isSign = (prefs.getString('activado') ?? '') != '' ? true : false;
+      registrado = (prefs.getString('registrado') ?? '') != '' ? true : false;
     });
+    // res = await AuthMethod()
+    //     .signupUser(email: email, password: pass, name: nombre);
+    // print("$res email $email, pass=$pass, nombre=$nombre" );
   }
 
   Future<void> _saveDataActivacion() async {
@@ -162,8 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           blurRadius: 5.0,
                           color: Colors.grey,
                         ),
-                      ]
-                      ),
+                      ]),
                   child: registrado ? userProfile() : login(),
                 ),
               )
@@ -177,8 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const ScreenIndice(),
-                    fullscreenDialog:
-                        true,
+                    fullscreenDialog: true,
                   ),
                 );
             }
@@ -202,8 +208,10 @@ class _LoginScreenState extends State<LoginScreen> {
             label: 'Progreso',
           ),
           NavigationDestination(
-            icon: Icon(Icons.person,
-            color: Colors.white,),
+            icon: Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
             label: 'Perfil',
           ),
         ],
@@ -214,18 +222,15 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget login() {
     return Padding(
       padding: const EdgeInsets.all(14.0),
-      child: isSign ?
-      enterProfile():
-      activaProfile(),
-
+      child: registrado ? activaProfile() : enterProfile(),
     );
   }
 
-
-  Widget enterProfile(){
-  return  Column(
+  Widget enterProfile() {
+    return Column(
       children: [
-        const Text("Ingresar",
+        const Text(
+          "Ingresar",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 22,
@@ -241,7 +246,18 @@ class _LoginScreenState extends State<LoginScreen> {
             textEditingController: emailController,
             hintText: 'Ingrese su email',
             textInputType: TextInputType.emailAddress),
+        const SizedBox(height: 8.0),
+        InputText(
+            icon: Icons.key,
+            textEditingController: passwordController,
+            isPass: true,
+            hintText: 'Ingrese su clave',
+            textInputType: TextInputType.emailAddress),
         const SizedBox(height: 18.0),
+
+
+
+
         ElevatedButton(
           onPressed: () {
             showSnackBar(context, "Mensaje",
@@ -256,7 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             shape: RoundedRectangleBorder(
               borderRadius:
-              BorderRadius.circular(20), // Agrega bordes redondeados
+                  BorderRadius.circular(20), // Agrega bordes redondeados
             ),
             foregroundColor: Colors.white,
             backgroundColor: Tema.histologyBkcg,
@@ -294,8 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget activaProfile() {
-return
-    Column(
+    return Column(
       children: [
         const SizedBox(
           height: 48,
@@ -321,12 +336,10 @@ return
           },
           style: ElevatedButton.styleFrom(
             textStyle: const TextStyle(
-              fontSize:
-              18, //fontWeight: FontWeight.bold
+              fontSize: 18, //fontWeight: FontWeight.bold
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                  20),
+              borderRadius: BorderRadius.circular(20),
             ),
             foregroundColor: Colors.white,
             backgroundColor: Tema.histologyBkcg,
@@ -335,7 +348,6 @@ return
         ),
       ],
     );
-
   }
 
   Widget userProfile() {
@@ -358,14 +370,10 @@ return
             'email',
           ),
           SizedBox(height: 42.0),
-         
-
           Text(
             'Contraseña',
           ),
           SizedBox(height: 40),
-
-
         ],
       ),
     );

@@ -37,7 +37,7 @@ class InputText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
