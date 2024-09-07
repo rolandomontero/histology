@@ -1,9 +1,10 @@
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:histology/Widget/navbar.dart';
 import 'package:histology/global/widgetprofile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../model/profile_model.dart';
 import '../services/authentication.dart';
@@ -24,6 +25,10 @@ class _HomeScreenLogin extends State<HomeScreenLogin> {
   @override
   void initState() {
     super.initState();
+
+
+
+
     _cargarDatosUsuario();
   }
 
@@ -105,7 +110,7 @@ class _HomeScreenLogin extends State<HomeScreenLogin> {
               Text(usuario!.name,),
               Container(
                 height: 2.0,
-                color: Color(0xCCCCCCCC), // Ancho de la línea
+                color: const Color(0xCCCCCCCC), // Ancho de la línea
                 width: screenWidth,
               ),
 
@@ -118,7 +123,7 @@ class _HomeScreenLogin extends State<HomeScreenLogin> {
           Text(usuario!.school),
           const SizedBox(height: 42.0),
           const SizedBox(height: 40),
-          const SignOutButton(),
+       
         ]
       );
 

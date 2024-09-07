@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:histology/Widget/navbar.dart';
+import 'package:histology/Widget/navbar.dart'; 
+import 'package:histology/login_sign/screen/login_screen.dart';
 import 'package:histology/model/class_indice.dart';
 import 'package:histology/global/constantes.dart';
 
@@ -12,6 +14,32 @@ class ScreenIndice extends StatefulWidget {
 }
 
 class _ScreenIndiceState extends State<ScreenIndice> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Escucha los cambios en el estado de autenticación
+    FirebaseAuth.instance.authStateChanges().listen((User? user) { 
+      if (user == null) {
+        // El usuario no ha iniciado sesión
+        print('Usuario no ha iniciado sesión');
+        Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const LoginScreen(),
+              fullscreenDialog: true,
+            ),
+          );
+        // Navega a la pantalla de inicio de sesión o realiza alguna otra acción
+      } else {
+        // El usuario ha iniciado sesión
+        print('Usuario ha iniciado sesión: ${user.uid}');
+        // Navega a la pantalla principal o realiza alguna otra acción
+      }
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
 

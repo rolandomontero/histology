@@ -103,4 +103,5 @@ class AuthMethod {
 
     return _user;
   }
+
 }
