@@ -10,3 +10,5 @@ class Email {
   static const senderEmail = 'app@histologyplus.mclautaro.cl';
   static const senderPassword = 'Rmx21071972#';
 }
+
+late final String nombre;

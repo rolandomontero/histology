@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:histology/Libro/class_indice.dart';
+import 'package:histology/Widget/navbar.dart';
+import 'package:histology/model/class_indice.dart';
 import 'package:histology/global/constantes.dart';
-import 'package:histology/login_sign/screen/login_screen.dart';
 
 class ScreenIndice extends StatefulWidget {
   const ScreenIndice({super.key});
@@ -14,7 +14,7 @@ class ScreenIndice extends StatefulWidget {
 class _ScreenIndiceState extends State<ScreenIndice> {
   @override
   Widget build(BuildContext context) {
-    const int currentPageIndex = 0;
+
     return Scaffold(
       appBar: AppBar(
          automaticallyImplyLeading: false,
@@ -67,48 +67,9 @@ class _ScreenIndiceState extends State<ScreenIndice> {
           ]),
         ),
       ),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            switch (index) {
-              case 3:
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const LoginScreen(),
-                    fullscreenDialog:
-                        true,
-                  ),
-                );
-            }
-          });
-        },
-        indicatorColor: Tema.histologyBkcg,
-        selectedIndex: currentPageIndex,
-        backgroundColor: Tema.histologyColor,
-        animationDuration: const Duration(milliseconds: 1000),
-        destinations: const <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.bookmark,
-              color: Colors.white,
-            ),
-            icon: Icon(Icons.bookmark),
-            label: 'Lecciones',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.chat_bubble),
-            label: 'Mensajes',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.emoji_events),
-            label: 'Progreso',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-        ],
-      ),
+      bottomNavigationBar:
+      const BotonNavegacionBarra(0),
+
     );
   }
 

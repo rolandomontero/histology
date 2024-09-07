@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 class MyButtons extends StatelessWidget {
   final VoidCallback onTap;
   final String text;
+
+
   const MyButtons({
     super.key,
     required this.onTap,
     required this.text,
+
   });
 
   @override
@@ -18,13 +21,14 @@ class MyButtons extends StatelessWidget {
         child: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: const ShapeDecoration(
-              shape: RoundedRectangleBorder(
+          decoration: ShapeDecoration(
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(30),
                 ),
               ),
-              color: Colors.blue),
+             color: Color(0xFF895476)
+          ),
           child: Text(
             text,
             style: const TextStyle(
@@ -38,3 +42,4 @@ class MyButtons extends StatelessWidget {
     );
   }
 }
+
