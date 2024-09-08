@@ -5,7 +5,7 @@ class MyButtons extends StatelessWidget {
   final String text;
 
 
-  const MyButtons({
+  const MyButtons(signOut, {
     super.key,
     required this.onTap,
     required this.text,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:histology/Libro/screen_indice.dart';
 import 'package:histology/Widget/input_text.dart';
 import 'package:histology/Widget/navbar.dart';
 import 'package:histology/Widget/snackbar.dart';
 import 'package:histology/global/constantes.dart';
 import 'package:histology/global/widgetprofile.dart';
+import 'package:histology/login_sign/Services/authentication.dart';
 import 'package:histology/login_sign/screen/sign_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,10 +51,37 @@ class _LoginScreenState extends State<LoginScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       registrado = (prefs.getString('name') ?? '') != '' ? true : false;
+      if(registrado){
+          showSnackBar(context, "Mensaje", "Estas con la sesion abierta");
+      }
     });
     // res = await AuthMethod()
     //     .signupUser(email: email, password: pass, name: nombre);
     // print("$res email $email, pass=$pass, nombre=$nombre" );
+  }
+
+  /// Guarda los datos ingresados y llama a la función de registro de usuario.
+  Future<void> _loginApp() async {
+    String res = await AuthMethod().loginUser(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+    if (res == 'success') {
+      // ignore: use_build_context_synchronously
+      showSnackBar(context, "Mensaje", "Bienvenido");
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const ScreenIndice(),
+              fullscreenDialog: true,
+            ),
+          );
+
+    } else {
+       // ignore: use_build_context_synchronously
+       showSnackBar(context, "Mensaje", res);
+    }
+
+    debugPrint("$res ");
   }
 
   @override
@@ -116,6 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget enterProfile() {
     return Column(
       children: [
+         const SizedBox(height: 24),
         const Text(
           "Ingresar",
           textAlign: TextAlign.center,
@@ -143,8 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(height: 18.0),
         ElevatedButton(
           onPressed: () {
-            showSnackBar(context, "Mensaje",
-                "Revise su email para validar la aplicación \n el mail es app.");
+            _loginApp();
             setState(() {
               isSign = true;
             });
@@ -160,8 +189,10 @@ class _LoginScreenState extends State<LoginScreen> {
             foregroundColor: Colors.white,
             backgroundColor: Tema.histologyBkcg,
           ),
-          child: const Text('Enviar Código'),
+          child: const Text('Ingresar'),
         ),
+        
+        
         const SizedBox(height: 8),
         Padding(
           padding: const EdgeInsets.only(top: 10),
@@ -188,6 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
         ),
+         const SizedBox(height: 18),
       ],
     );
   }

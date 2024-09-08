@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:histology/Widget/navbar.dart';
+import 'package:histology/global/constantes.dart';
 import 'package:histology/global/widgetprofile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../model/profile_model.dart';
 import '../services/authentication.dart';
@@ -19,16 +18,12 @@ class HomeScreenLogin extends StatefulWidget {
 class _HomeScreenLogin extends State<HomeScreenLogin> {
   bool registrado = false;
   ProfileUser usuario = ProfileUser(name: '', email: '', school: '', pass: '');
-
-  static const int currentPageIndex = 3;
+  String name = '';
+  String school = '';
 
   @override
   void initState() {
     super.initState();
-
-
-
-
     _cargarDatosUsuario();
   }
 
@@ -37,11 +32,19 @@ class _HomeScreenLogin extends State<HomeScreenLogin> {
     registrado = (prefs.getString('name') ?? '') != '' ? true : false;
     if (registrado) {
       usuario = await AuthMethod().loadMemory();
+      name = usuario.name;
+      school= usuario.school;
+
       print('\n ${usuario.name}');
       print('\n ${usuario.email}');
       print('\n ${usuario.school}');
-
     }
+        // Actualiza el estado del widget
+    setState(() {}); 
+  }
+
+  Future<void> _cerrarSesion() async {
+    AuthMethod().signOut();
   }
 
   @override
@@ -92,40 +95,83 @@ class _HomeScreenLogin extends State<HomeScreenLogin> {
               )
             ])),
       ),
-      bottomNavigationBar:
-        const BotonNavegacionBarra(3),
+      bottomNavigationBar: const BotonNavegacionBarra(3),
     );
   }
 
   Widget userProfile() {
     final screenWidth = MediaQuery.of(context).size.width;
-    return  Column(
+    return Column(children: [
+     const SizedBox(height: 42.0),
+      SizedBox(height: 12.0, width: screenWidth),
+       ShowProfile(editar: true),
+      const SizedBox(height: 42.0),
+      Text(
+            usuario.name,
+              style: GoogleFonts.montserrat(
+               // color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold
+                )
+                ,
+          ),
+      Stack(
         children: [
-          const Text('User Profile'),
-          SizedBox(height: 12.0, width:screenWidth),
-          const ShowProfile(editar: false),
-          const SizedBox(height: 42.0),
-          Stack(
-            children: [
-              Text(usuario!.name,),
-              Container(
-                height: 2.0,
-                color: const Color(0xCCCCCCCC), // Ancho de la línea
-                width: screenWidth,
-              ),
-
-            ],
+          
+          Container(
+            height: 2.0,
+            color: const Color(0xCCCCCCCC), // Ancho de la línea
+            width: screenWidth*0.7,
           ),
-          Text(usuario!.school,
+        ],
+      ),
 
+      const Text(
+      "Usuario",
+      ),
+      const SizedBox(height: 42.0),
+      Text(school,
+       style: GoogleFonts.montserrat(
+               // color: Colors.white,
+                fontSize: 18.0,
+              //  fontWeight: FontWeight.bold
+                )
+                ,),
+       Stack(
+        children: [
+          
+          Container(
+            height: 2.0,
+            color: const Color(0xCCCCCCCC), // Ancho de la línea
+            width: screenWidth*0.7,
           ),
-          const SizedBox(height: 42.0),
-          Text(usuario!.school),
-          const SizedBox(height: 42.0),
-          const SizedBox(height: 40),
-       
-        ]
-      );
-
+        ],
+      ),
+       const Text(
+      "Institucion Educativa",
+      ),
+      const SizedBox(height: 82.0),
+      
+      ElevatedButton(
+        onPressed: () {
+          setState(() {
+            _cerrarSesion();
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          textStyle: const TextStyle(
+            fontSize: 18, //fontWeight: FontWeight.bold
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(20), // Agrega bordes redondeados
+          ),
+          foregroundColor: Colors.white,
+          backgroundColor: Tema.histologyBkcg,
+        ),
+        child: const Text('Salir'),
+      ),
+      const SizedBox(height: 20),
+    ]);
   }
 }

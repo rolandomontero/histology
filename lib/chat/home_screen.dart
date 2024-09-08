@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:histology/Widget/navbar.dart';
 import '../global/constantes.dart';
 import 'message_wdget.dart';
 
@@ -26,7 +27,7 @@ class _HomeScreenChat extends State<HomeScreenChat> {
       model: 'gemini-1.5-flash',
       //'gemini-1.5-flash-latest',
       apiKey: 'AIzaSyBOeTYiezy7jIFgLcY0qqB621fnNSLUzUY',
-      //'AIzaSyCJcPJs3kOthfG92zTAXDs46MdpG-DO9t8', //'AIzaSyABRDrSCecr8byHGRDEex9OA5Uh-YAW4Ic',
+      //'AIzaSyCJcPJs3kOthfG92zTAXDs46MdpG-DO9t8', //'AIzaSyABRDrSCecr8byHGRDEex9OA5Uh-YAW4Ic',AIzaSyBOeTYiezy7jIFgLcY0qqB621fnNSLUzUY
       generationConfig: GenerationConfig(
         temperature: 1,
         topK: 64,
@@ -46,7 +47,8 @@ class _HomeScreenChat extends State<HomeScreenChat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             "Chat",
             textAlign: TextAlign.center,
@@ -57,75 +59,75 @@ class _HomeScreenChat extends State<HomeScreenChat> {
           ),
           centerTitle: true,
           titleTextStyle: const TextStyle(
-          color: Colors.white,
-      fontFamily: 'Montserrat',
-      fontSize: 22,
-      fontWeight: FontWeight.bold),
-      // toolbarHeight: 80,
-      backgroundColor: Tema.histologyBkcg,
-      elevation: 8.0,
-      shadowColor: Colors.grey,
-    ),
-
-
-    body: Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Container(
-    height: double.infinity,
-    decoration: const BoxDecoration(
-    image: DecorationImage(
-    image: AssetImage('assets/images/wallpaper/w1.jpeg'),
-    fit: BoxFit.cover,
-    ),
-    ),
-    child:
-
-
-    Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Expanded(
-    child: ListView.builder(
-    controller: _scrollController,
-    itemCount: _chatSession.history.length,
-    itemBuilder: (context, index) {
-    final Content content =
-    _chatSession.history.toList()[index];
-    final text = content.parts
-        .whereType<TextPart>()
-        .map<String>(
-    (e) => e.text,
-    )
-        .join('');
-    return MessageWdget(
-    text: text,
-    isFromUser: content.role == 'user',
-    );
-    })),
-    Padding(
-    padding: const EdgeInsets.symmetric(
-    vertical: 25,
-    horizontal: 15,
-    ),
-    child: Row(
-    children: [
-    Expanded(
-    child: TextField(
-    autofocus: true,
-    focusNode: _textFielFocus,
-    decoration: textFieldDecoration(),
-    controller: _textController,
-    onSubmitted: _sendChatMessenge,
-    ))
-    ],
-    ))
-    ],
-    ),
-    )
-
-
-    ));
+              color: Colors.white,
+              fontFamily: 'Montserrat',
+              fontSize: 22,
+              fontWeight: FontWeight.bold),
+          // toolbarHeight: 80,
+          backgroundColor: Tema.histologyBkcg,
+          elevation: 8.0,
+          shadowColor: Colors.grey,
+        ),
+        body:
+            
+            Container(
+              height: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/wallpaper/w2.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: 
+               Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: 
+              
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: ListView.builder(
+                          controller: _scrollController,
+                          itemCount: _chatSession.history.length,
+                          itemBuilder: (context, index) {
+                            final Content content =
+                                _chatSession.history.toList()[index];
+                            final text = content.parts
+                                .whereType<TextPart>()
+                                .map<String>(
+                                  (e) => e.text,
+                                )
+                                .join('');
+                            return MessageWdget(
+                              text: text,
+                              isFromUser: content.role == 'user',
+                            );
+                          })),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 25,
+                        horizontal: 15,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: TextField(
+                            autofocus: true,
+                            focusNode: _textFielFocus,
+                            decoration: textFieldDecoration(),
+                            controller: _textController,
+                            onSubmitted: _sendChatMessenge,
+                          ))
+                        ],
+                      ))
+                ],
+              ),
+               ),
+            
+            ),
+        bottomNavigationBar: const BotonNavegacionBarra(1));
   }
 
   InputDecoration textFieldDecoration() {
@@ -141,10 +143,7 @@ class _HomeScreenChat extends State<HomeScreenChat> {
           Radius.circular(14),
         ),
         borderSide: BorderSide(
-          color: Theme
-              .of(context)
-              .colorScheme
-              .secondary,
+          color: Theme.of(context).colorScheme.secondary,
         ),
       ),
 
@@ -153,12 +152,9 @@ class _HomeScreenChat extends State<HomeScreenChat> {
             Radius.circular(14),
           ),
           borderSide: BorderSide(
-            color: Theme
-                .of(context)
-                .colorScheme
-                .secondary,
+            color: Theme.of(context).colorScheme.secondary,
           )),
-      //suffixIcon: _loading ? const CircularProgressIndicator() : const Icon(Icons.send),
+     suffixIcon: _loading ? const CircularProgressIndicator() : const Icon(Icons.send),
     );
   }
 

@@ -39,6 +39,7 @@ class MessageWdget extends StatelessWidget {
               ),
               child: Column(
                 children: [
+                  
                   MarkdownBody(
                     data: text,
                   )

@@ -89,7 +89,7 @@ class AuthMethod {
   }
 
   // for sighout
-  signOut() async {
+ Future<void> signOut() async {
     await _auth.signOut();
   }
 
