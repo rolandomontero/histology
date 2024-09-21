@@ -19,10 +19,9 @@ class MessageWdget extends StatelessWidget {
           child: Theme(
             data: ThemeData(
               textTheme: const TextTheme(
-                bodyLarge: TextStyle(color: Colors.white),
+                bodyLarge: TextStyle(color: Color(0xFF000000)),
               ),
-              primaryColor: const Color(0xFFECC759),
-
+               
             ),
             child: Container(
               padding: const EdgeInsets.symmetric(
@@ -33,16 +32,30 @@ class MessageWdget extends StatelessWidget {
               constraints: const BoxConstraints(maxWidth: 520),
               decoration: BoxDecoration(
                 color: isFromUser
-                    ? Color(0xFFECC759)//Theme.of(context).colorScheme.primary.withOpacity(0.8)
-                    : Color(0xFFD99992),//Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+                    ? const Color(
+                        0xFFFFFFFF) //Theme.of(context).colorScheme.primary.withOpacity(0.8)
+                    : const Color.fromARGB(242, 255, 187, 179), //Theme.of(context).colorScheme.secondary.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(18),
               ),
-              child: Column(
+              child:
+              
+              
+               Column(
+                
                 children: [
-                  
+                  Text('es usuario $isFromUser'),
                   MarkdownBody(
-                    data: text,
-                  )
+                      styleSheet: MarkdownStyleSheet(
+                        p: const TextStyle(
+                          fontSize: 18.0,
+                          // color: isFromUser? Colors.black: Colors.white,
+                        ), // Tamaño de fuente para párrafos
+                        h1: const TextStyle(
+                            fontSize:
+                                24.0), // Tamaño de fuente para encabezados h1
+                        // ... otros estilos para diferentes elementos Markdown
+                      ),
+                      data: text)
                 ],
               ),
             ),
@@ -51,6 +64,4 @@ class MessageWdget extends StatelessWidget {
       ],
     );
   }
-
-
 }

@@ -56,7 +56,7 @@ dependencies:
   cloud_firestore: ^5.2.1
 
   google_generative_ai: ^0.4.0
-  flutter_markdown: ^0.6.19
+  flutter_markdown: ^0.7.3+1
 
 
 dev_dependencies:

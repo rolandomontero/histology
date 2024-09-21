@@ -65,5 +65,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'histologyplus-b3d92.appspot.com',
     iosBundleId: 'cl.mclautaro.histology',
   );
-
 }

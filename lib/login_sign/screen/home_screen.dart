@@ -110,10 +110,11 @@ class _HomeScreenLogin extends State<HomeScreenLogin> {
             usuario.name,
               style: GoogleFonts.montserrat(
                // color: Colors.white,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold
-                )
-                ,
+                fontSize: 22.0,
+                fontWeight: FontWeight.bold,
+
+                ),
+          textAlign: TextAlign.center,
           ),
       Stack(
         children: [
@@ -133,10 +134,11 @@ class _HomeScreenLogin extends State<HomeScreenLogin> {
       Text(school,
        style: GoogleFonts.montserrat(
                // color: Colors.white,
-                fontSize: 18.0,
+                fontSize: 16.0,
               //  fontWeight: FontWeight.bold
                 )
-                ,),
+                ,
+        textAlign: TextAlign.center,),
        Stack(
         children: [
           

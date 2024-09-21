@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:histology/Widget/navbar.dart'; 
+import 'package:histology/Widget/navbar.dart';
 import 'package:histology/login_sign/screen/login_screen.dart';
 import 'package:histology/model/class_indice.dart';
 import 'package:histology/global/constantes.dart';
+import 'package:histology/web_view_container.dart';
 
 class ScreenIndice extends StatefulWidget {
   const ScreenIndice({super.key});
@@ -14,39 +17,47 @@ class ScreenIndice extends StatefulWidget {
 }
 
 class _ScreenIndiceState extends State<ScreenIndice> {
+  bool _firebaseInitialized = false;
+
   @override
   void initState() {
     super.initState();
+    _initializeFirebase();
+  }
 
-    // Escucha los cambios en el estado de autenticación
-    FirebaseAuth.instance.authStateChanges().listen((User? user) { 
-      if (user == null) {
-        // El usuario no ha iniciado sesión
-        print('Usuario no ha iniciado sesión');
-        Navigator.of(context).push(
+  Future<void> _initializeFirebase() async {
+    await Firebase.initializeApp();
+    setState(() {
+      _firebaseInitialized = true;
+      // Escucha los cambios en el estado de autenticación
+      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        if (user == null) {
+          // El usuario no ha iniciado sesión
+          if (kDebugMode) {
+            print('Usuario no ha iniciado sesión');
+          }
+          Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const LoginScreen(),
               fullscreenDialog: true,
             ),
           );
-        // Navega a la pantalla de inicio de sesión o realiza alguna otra acción
-      } else {
-        // El usuario ha iniciado sesión
-        print('Usuario ha iniciado sesión: ${user.uid}');
-        // Navega a la pantalla principal o realiza alguna otra acción
-      }
+          // Navega a la pantalla de inicio de sesión o realiza alguna otra acción
+        } else {
+          // El usuario ha iniciado sesión
+          print('Usuario ha iniciado sesión: ${user.uid}');
+          // Navega a la pantalla principal o realiza alguna otra acción
+        }
+      });
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-         automaticallyImplyLeading: false,
-         title: Center(
+        automaticallyImplyLeading: false,
+        title: Center(
           child: Text(
             "Lecciones",
             textAlign: TextAlign.center,
@@ -87,7 +98,9 @@ class _ScreenIndiceState extends State<ScreenIndice> {
             ),
           ),
           child: Column(children: [
-              const SizedBox(  height: 22,        ),
+            const SizedBox(
+              height: 22,
+            ),
             content(),
             Expanded(
               child: listaContenidos(temas),
@@ -95,9 +108,7 @@ class _ScreenIndiceState extends State<ScreenIndice> {
           ]),
         ),
       ),
-      bottomNavigationBar:
-      const BotonNavegacionBarra(0),
-
+      bottomNavigationBar: const BotonNavegacionBarra(0),
     );
   }
 
@@ -105,7 +116,12 @@ class _ScreenIndiceState extends State<ScreenIndice> {
     return Center(
         child: ElevatedButton(
       onPressed: () {
-        Navigator.of(context).pushNamed('/webViewContainer');
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const WebViewContainer(),
+            fullscreenDialog: true,
+          ),
+        );
       },
       child: const Text("Introducción"),
     ));
