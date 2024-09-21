@@ -6,6 +6,7 @@ class Capitulo {
   late final String minutos;
   late final String gd;
   late final String color;
+  late final String txtcolor;
 
   Capitulo({
     required this.imagePath,
@@ -15,6 +16,8 @@ class Capitulo {
     required this.minutos,
     required this.gd,
     required this.color,
+    required this.txtcolor,
+
   });
 }
 
@@ -25,84 +28,35 @@ List<Capitulo> temas = [
     capitulo: '1', 
     tema: 'Histología', 
     descripcion: 'Nos permite el estudio de las células integradas en tejidos, órganos y sistemas del cuerpo humano sin enfermedad para luego aprender sobre las diferentes enfermedades, esta es la base de las medidas terapéuticas que aplica la medicina.', 
-    minutos: '15', 
+    minutos: '15 min.',
     gd: '10%', 
-    color: 'FF895476'),
+    color: 'FF895476',
+    txtcolor: 'FFF2F0E0',
+    ),
 
   Capitulo(
     imagePath: 'assets/images/icons/microscopio.png', 
     capitulo: '1', 
     tema: 'Microscopía', 
     descripcion: 'Comprender los tipos y usos de los microscopios, sus componentes y aplicaciones en histología, incluyendo la microscopía virtual para analizar muestras digitalizadas.', 
-    minutos: '15', 
+    minutos: '15 min.',
     gd: '30%', 
-    color: 'fee8d9ca'),
+    color: 'fee8d9ca',
+    txtcolor: 'FF895476',
+
+  ),
 
     Capitulo(
     imagePath: 'assets/images/icons/niveles.png', 
     capitulo: '1', 
     tema: 'Niveles de Organización', 
-    descripcion: 'Comprender la microanatomía de las células, tejidos y órganos, correlacionando la estructura con la función, desde la célula eucariota hasta los sistemas de órganos.', 
-    minutos: '15', 
-    gd: '30%', 
-    color: 'FF895476'),
+    descripcion: 'Comprender la microanatomía de las células\n, tejidos y órganos, correlacionando la estructura con la función, desde la célula eucariota hasta los sistemas de órganos.',
+    minutos: '15 min.',
+    gd: '30%',
+      color: 'FF895476',
+      txtcolor: 'FFF2F0E0',
+    ),
 
 
 
 ];
-
-      // -----------------------------------------------------------------+
-      // 'imagePath': 'assets/images/icons/tejido_2.png',
-      // 'tema': 'Microscopía',
-      // 'descripción':
-      //     'Comprender los tipos y usos de los microscopios, sus componentes y aplicaciones en histología, incluyendo la microscopía virtual para analizar muestras digitalizadas.',
-      // 'horas': '10',
-      // 'puntos': '30',
-      // 'color': '0xDCE8D9C7'
-      // -----------------------------------------------------------------+
-
-List<Map<String, String>> capitulos = [
-  {
-    'Capitulo':'1',
-    'imagePath':'',
-    'Nombre':'INTRODUCCIÓN A LA HISTOLOGIA y MÉTODOS DE ESTUDIO',
-    'Descripcion':'',
-    'Color':'FFFFFFFF'
-  },
-    {
-    'Capitulo':'2',
-    'imagePath':'',
-    'Nombre':'TEJIDO EPITELIAL: REVESTIMIENTO y GLANDULARES',
-    'Descripcion':'',
-    'Color':'FFFFFFFF'
-  },
-    {
-    'Capitulo':'3',
-    'imagePath':'',
-    'Nombre':'TEJIDO CONECTIVO I',
-    'Descripcion':'',
-    'Color':'FFFFFFFF'
-  },
-    {
-    'Capitulo':'1',
-    'imagePath':'',
-    'Nombre':'INTRODUCCIÓN A LA HISTOLOGIA y MÉTODOS DE ESTUDIO',
-    'Descripcion':'',
-    'Color':'FFFFFFFF'
-  },
-    {
-    'Capitulo':'1',
-    'Nombre':'INTRODUCCIÓN A LA HISTOLOGIA y MÉTODOS DE ESTUDIO',
-    'Descripcion':'',
-    'Color':'FFFFFFFF'
-  },
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  ];  

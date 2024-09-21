@@ -165,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
             textInputType: TextInputType.emailAddress),
         const SizedBox(height: 8.0),
         InputText(
-            icon: Icons.key,
+            icon: Icons.lock,
             textEditingController: passwordController,
             isPass: true,
             hintText: 'Ingrese su clave',

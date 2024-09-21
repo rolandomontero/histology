@@ -17,7 +17,7 @@ class ScreenIndice extends StatefulWidget {
 }
 
 class _ScreenIndiceState extends State<ScreenIndice> {
-  bool _firebaseInitialized = false;
+ 
 
   @override
   void initState() {
@@ -28,7 +28,6 @@ class _ScreenIndiceState extends State<ScreenIndice> {
   Future<void> _initializeFirebase() async {
     await Firebase.initializeApp();
     setState(() {
-      _firebaseInitialized = true;
       // Escucha los cambios en el estado de autenticación
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
         if (user == null) {
@@ -45,7 +44,8 @@ class _ScreenIndiceState extends State<ScreenIndice> {
           // Navega a la pantalla de inicio de sesión o realiza alguna otra acción
         } else {
           // El usuario ha iniciado sesión
-          print('Usuario ha iniciado sesión: ${user.uid}');
+          print(
+              'Usuario ha iniciado sesión: ${user.uid}, ${user.email} ${user.displayName}');
           // Navega a la pantalla principal o realiza alguna otra acción
         }
       });
@@ -101,10 +101,13 @@ class _ScreenIndiceState extends State<ScreenIndice> {
             const SizedBox(
               height: 22,
             ),
-            content(),
+            // content(),
             Expanded(
               child: listaContenidos(temas),
             ),
+            const SizedBox(
+              height: 12,
+            )
           ]),
         ),
       ),
@@ -132,9 +135,8 @@ class _ScreenIndiceState extends State<ScreenIndice> {
         itemCount: tema.length,
         itemBuilder: (BuildContext context, int index) {
           final miTema = tema[index];
-          final int colorValue =
-              (int.parse(miTema.color.toString(), radix: 16));
-          Color micolor = Color(colorValue);
+          final micolor = Color(int.parse(miTema.color.toString(), radix: 16));
+          final bckcolor =Color(int.parse(miTema.txtcolor.toString(), radix: 16));
 
           return Column(
             children: [
@@ -171,7 +173,7 @@ class _ScreenIndiceState extends State<ScreenIndice> {
                                 miTema.tema,
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.acme(
-                                    color: Colors.white,
+                                    color: bckcolor,
                                     fontSize: 32.0,
                                     fontWeight: FontWeight.bold,
                                     height: 0.8),
@@ -180,11 +182,18 @@ class _ScreenIndiceState extends State<ScreenIndice> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.timelapse_rounded,
+                                  color: bckcolor,
                                 ),
-                                Text(miTema.minutos),
-                                Text(miTema.gd)
+                                Text(
+                                  miTema.minutos,
+                                  style: TextStyle(color: bckcolor),
+                                ),
+                                Text(
+                                  miTema.gd,
+                                  style: TextStyle(color: bckcolor),
+                                )
                               ],
                             ),
                             const SizedBox(width: 12.0),

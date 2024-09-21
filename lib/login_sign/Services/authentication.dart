@@ -14,7 +14,8 @@ class AuthMethod {
     required String email,
     required String password,
     required String name,
-    required String school,
+    required String school,  
+    String imgProfile = '',
   }) async {
     String res = "Algo ocurrio";
     try {
@@ -29,14 +30,17 @@ class AuthMethod {
           'uid': cred.user!.uid,
           'name': name,
           'email': email,
-          'school': school
+          'school': school,
+          'imgProfile': imgProfile
         });
 
         final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('uid', cred.user!.uid);
         await prefs.setString('name', name);
         await prefs.setString('email', email);
         await prefs.setString('school', school);
         await prefs.setString('pass', password);
+        await prefs.setString('imgProfile', imgProfile);
 
         res = "success";
       }
@@ -67,13 +71,15 @@ class AuthMethod {
         final userDocRef = _firestore.collection("users").doc(uid);
         final userSnapshot = await userDocRef.get();
 
-        print('\n == == CARGANDO DATOS => ===');
+        print('\n == == =!  CARGANDO DATOS => ===');
         if (userSnapshot.exists) {
           final userData = userSnapshot.data() as Map<String, dynamic>;
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('name', userData['name']);
           await prefs.setString('email', userData['email']);
           await prefs.setString('school', userData['school']);
+          await prefs.setString('imgProfile', userData['imgProfile']);
+          await prefs.setString('uid', uid);
           await prefs.setString('pass', password);
         }
         res = "success";
@@ -89,8 +95,16 @@ class AuthMethod {
   }
 
   // for sighout
- Future<void> signOut() async {
+  Future<void> signOut() async {
     await _auth.signOut();
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.remove('name');
+    await prefs.remove('email');
+    await prefs.remove('school');
+    await prefs.remove('pass');
+    await prefs.remove('imgProfile');
+    await prefs.remove('uid');
   }
 
   Future<ProfileUser> loadMemory() async {
@@ -99,9 +113,8 @@ class AuthMethod {
         name: prefs.getString('name') ?? '',
         email: prefs.getString('email') ?? '',
         school: prefs.getString('school') ?? '',
-        pass: prefs.getString('pass') ?? '');
-
+        pass: prefs.getString('pass') ?? '',
+        imgProfile: prefs.getString('imgProfile') ?? '');
     return _user;
   }
-
 }

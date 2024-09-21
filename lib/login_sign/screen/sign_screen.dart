@@ -109,7 +109,7 @@ class _SignScreenState extends State<SignScreen> {
         email: emailController.text,
         password: passwordController.text,
         name: nameController.text,
-        school: schoolController.text);
+        school: schoolController.text,);
     debugPrint("$res ");
   }
 

@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:histology/Widget/navbar.dart';
+import 'package:histology/login_sign/Services/authentication.dart';
+import 'package:histology/model/profile_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../global/constantes.dart';
 import 'message_wdget.dart';
 
@@ -19,6 +25,10 @@ class _HomeScreenChat extends State<HomeScreenChat> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool _loading = false;
+  Uint8List? imagen;
+  ProfileUser usuario =
+      ProfileUser(name: '', email: '', school: '', pass: '', imgProfile: '');
+  String name = 'Usuario';
 
   @override
   void initState() {
@@ -27,8 +37,8 @@ class _HomeScreenChat extends State<HomeScreenChat> {
       model: 'gemini-1.5-flash',
       //'gemini-1.5-flash-latest',
       apiKey: 'AIzaSyBOeTYiezy7jIFgLcY0qqB621fnNSLUzUY',
-      //'AIzaSyCJcPJs3kOthfG92zTAXDs46MdpG-DO9t8', //'AIzaSyABRDrSCecr8byHGRDEex9OA5Uh-YAW4Ic',AIzaSyBOeTYiezy7jIFgLcY0qqB621fnNSLUzUY
-      generationConfig: GenerationConfig(
+      //AIzaSyBOeTYiezy7jIFgLcY0qqB621fnNSLUzUY
+    generationConfig: GenerationConfig(
         temperature: 1,
         topK: 64,
         topP: 0.95,
@@ -39,8 +49,21 @@ class _HomeScreenChat extends State<HomeScreenChat> {
       systemInstruction: Content.system(
           'Actúa como un experto en histología y un excelente docente en la materia. En este chat, solo discutiremos aspectos exclusivamente relacionados con la histología. Proporciona explicaciones detalladas, resuelve dudas, y ofrece ejemplos claros y concisos para facilitar la comprensión de los conceptos histológicos. Además, comparte consejos y recursos pedagógicos para mejorar el aprendizaje en esta disciplina.'),
     );
-    
     _chatSession = _model.startChat();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    usuario = (((prefs.getString('name') ?? '') != '' ? true : false)
+        ? await AuthMethod().loadMemory()
+        : null)!;
+
+    setState(() {
+      imagen = base64Decode(usuario.imgProfile);
+      print(usuario.name);
+      print(imagen);
+    });
   }
 
   @override
@@ -95,15 +118,17 @@ class _HomeScreenChat extends State<HomeScreenChat> {
                               )
                               .join('');
                           return MessageWdget(
+                            name: usuario.name,
                             text: text,
                             isFromUser: content.role == 'user',
+                            backgroundImage:
+                                imagen != null ? MemoryImage(imagen!) : null,
                           );
                         })),
-                                               
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 12,
-                    bottom: 42,
+                    bottom: 12,
                     left: 8,
                   ),
                   child: Row(
@@ -139,15 +164,14 @@ class _HomeScreenChat extends State<HomeScreenChat> {
             Icons.send,
             color: Colors.white,
           ),
-        ));
-    // bottomNavigationBar: const BotonNavegacionBarra(1));
+        ),
+        bottomNavigationBar: const BotonNavegacionBarra(1));
   }
 
   InputDecoration textFieldDecoration() {
     return InputDecoration(
-     
       contentPadding: const EdgeInsets.all(8),
-      hintText:  _loading ? 'Procesando...' : 'Ingrese un pregunta...',
+      hintText: _loading ? 'Procesando...' : 'Ingrese un pregunta...',
       filled: true,
       // Set filled to true for a filled background
       fillColor: Colors.white,
@@ -168,18 +192,18 @@ class _HomeScreenChat extends State<HomeScreenChat> {
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.secondary,
           )),
-     suffixIcon: _loading
-       ? ClipRRect(
-           borderRadius: BorderRadius.circular(4.0), // La mitad de 8.0 (height/width)
-           child: Image.asset(
-             'assets/images/monocito.gif',
-             height: 8,
-             width: 8,
-             fit: BoxFit.cover, // Ajusta la imagen al círculo
-           ),
-         )
-       : const Icon(Icons.keyboard),
-     
+      suffixIcon: _loading
+          ? ClipRRect(
+              borderRadius:
+                  BorderRadius.circular(4.0), // La mitad de 8.0 (height/width)
+              child: Image.asset(
+                'assets/images/monocito.gif',
+                height: 8,
+                width: 8,
+                fit: BoxFit.cover, // Ajusta la imagen al círculo
+              ),
+            )
+          : const Icon(Icons.keyboard),
     );
   }
 
